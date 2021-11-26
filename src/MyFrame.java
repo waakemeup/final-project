@@ -1,6 +1,15 @@
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Random;
 
-@SuppressWarnings("All")
-public class MyFrame extends Frame {
+public class MyFrame  {
+
+    public void init(){
+
+    }
+}
+
+class MyChess extends Canvas {
 
 }
