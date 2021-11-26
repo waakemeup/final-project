@@ -11,7 +11,7 @@ public class MyChessBoard {
     private static final MyChessBoard chess = new MyChessBoard();
 
 //    返回一个新的类单例
-    MyChessBoard getInstance(){
+    static MyChessBoard getInstance(){
         return chess;
     }
 
