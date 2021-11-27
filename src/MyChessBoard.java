@@ -24,7 +24,7 @@ public class MyChessBoard {
     public void makeMove(int x,int y,int color){
         board[x][y]=color;
     }
-    
+
 //    判断游戏是否结束 0未结束 1白棋赢 2黑棋赢
     public int isGameOver(int x,int y,int color){
 //        这两个数组表示方向，因为坐标要同时操作，+时代表{上,右，右上，右下},-时则是另外4个方向
