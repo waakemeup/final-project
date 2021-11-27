@@ -18,6 +18,7 @@ public class ButtonListener implements Config, ActionListener {
     public void actionPerformed(ActionEvent e) {
         if ("开始游戏".equals(e.getActionCommand())) {
             BoardListener bl=new BoardListener(frame);
+            bl.newGame();
             frame.addMouseListener(bl);
         }
     }
