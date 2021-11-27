@@ -1,6 +1,4 @@
-package gobang;
-
-public class Chess {
+class Chess {
     public static final int CHESSBOARD_SIZE = 15;
     public static int FIRST = 1;//先手，-1表示机器，1表示人类
     private int[][] chessboard = new int[CHESSBOARD_SIZE][CHESSBOARD_SIZE];//与界面棋盘对应，0代表空，-1代表机器，1代表人类
