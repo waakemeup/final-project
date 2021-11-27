@@ -1,8 +1,5 @@
 package com.gobang.demo01;
 
-import sun.nio.cs.ext.MacArabic;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -78,17 +75,42 @@ public class BoardListener implements Config, MouseListener {
         if (isOverInDirection(siteX, Math.max(siteY - 4, 0), siteX, Math.min(siteY + 4, ROW), 0, 1, flag)) {
             return true;
         }
-        // 捺
-        if (isOverInDirection(Math.max(siteX - 4, 0), Math.max(siteY - 4, 0), Math.min(siteX + 4, COLUMN),
-                Math.min(siteY + 4, ROW), 1, 1, flag)) {
+        // 捺，这里不可以直接减，否则会有BUG
+        int startOffset = getTargetSite(siteX, siteY, -1, -1);
+        int endOffset = getTargetSite(siteX, siteY, 1, 1);
+        if (isOverInDirection(siteX - startOffset, siteY - startOffset, siteX + endOffset,
+                siteY + endOffset, 1, 1, flag)) {
             return true;
         }
-        // 撇
-        if (isOverInDirection(Math.min(siteX + 4, COLUMN), Math.max(siteY - 4, 0),
-                Math.max(siteX - 4, 0), Math.min(siteY + 4, ROW), -1, 1, flag)) {
+        // 撇，注意事项同上
+        startOffset = getTargetSite(siteX, siteY, 1, -1);
+        endOffset = getTargetSite(siteX, siteY, -1, 1);
+        if (isOverInDirection(siteX + startOffset, siteY - startOffset,
+                siteX - endOffset, siteY + endOffset, -1, 1, flag)) {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 获取指定方向上的偏移量
+     * @param siteX
+     * @param siteY
+     * @param xOffset
+     * @param yOffset
+     * @return 这个方向上的偏移量
+     */
+    private static int getTargetSite(int siteX, int siteY, int xOffset, int yOffset) {
+        int offset = 0;
+        for (int i = 0; i < 4; i++) {
+            if (!Frame.isEffective(siteX,siteY)) {
+                break;
+            }
+            siteX += xOffset;
+            siteY += yOffset;
+            offset++;
+        }
+        return offset;
     }
 
 
