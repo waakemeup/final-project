@@ -126,12 +126,12 @@ public class Frame extends JPanel implements Config {
         return -1;
     }
 
-    public boolean isEffective(int x, int y) {
+    public static boolean isEffective(int x, int y) {
         return x >= 0 && x < COLUMN && y >= 0 && y < ROW;
     }
 
 
     public void showGameOver(Player playerTurn) {
-        JOptionPane.showMessageDialog(this, playerTurn.getFlag() == 1 ? "白方" : "黑方" + "赢了");
+        JOptionPane.showMessageDialog(this, (playerTurn.getFlag() == 1 ? "白方" : "黑方") + "赢了");
     }
 }
