@@ -8,7 +8,7 @@
 
 #idea config
 .idea/
-.out/
+./out/
 
 
 # BlueJ files
