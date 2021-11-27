@@ -40,8 +40,21 @@ public interface Config {
         /**
          * 下棋双方
          */
-        BLACK,
-        WHITE
+        BLACK(1),
+        WHITE(2);
+
+        /**
+         * 标识信息
+         */
+        private int flag;
+
+        public int getFlag() {
+            return flag;
+        }
+
+        Player(int i) {
+            flag = i;
+        }
     }
 
     /**

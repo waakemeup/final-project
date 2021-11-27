@@ -103,11 +103,35 @@ public class Frame extends JPanel implements Config {
 
     public void putChess(int x, int y, Player turn) {
         if (isAvailable(x, y)) {
-            board[x][y] = (byte) (turn == Player.BLACK ? 1 : 2);
+            board[y][x] = (byte) (turn == Player.BLACK ? 1 : 2);
         }
     }
 
     public boolean isAvailable(int x, int y) {
-        return board[x][y] == 0;
+        return board[y][x] == 0;
+    }
+
+
+    /**
+     * 返回指定位置的棋子情况
+     *
+     * @param siteX
+     * @param siteY
+     * @return 1代表黑棋，2代表白棋，-1表示非法参数
+     */
+    public int getChess(int siteX, int siteY) {
+        if (isEffective(siteX, siteY)) {
+            return board[siteY][siteX];
+        }
+        return -1;
+    }
+
+    public boolean isEffective(int x, int y) {
+        return x >= 0 && x < COLUMN && y >= 0 && y < ROW;
+    }
+
+
+    public void showGameOver(Player playerTurn) {
+        JOptionPane.showMessageDialog(this, playerTurn.getFlag() == 1 ? "白方" : "黑方" + "赢了");
     }
 }
