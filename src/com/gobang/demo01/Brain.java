@@ -17,8 +17,8 @@ public class Brain {
     }
 
     private void initWeight() {
-        for (int[] ints : weightArray) {
-            Arrays.fill(ints, 0);
+        for (int i = 0; i < weightArray.length; i++) {
+            Arrays.fill(weightArray[i], 0);
         }
     }
 
@@ -33,7 +33,7 @@ public class Brain {
                     content = new StringBuilder(initStr);
                     int jMin = Math.max(0, j - 4);
                     for (int positionJ = j - 1; positionJ >= jMin; positionJ--) {
-                        content.append(board.getChess(j, i));
+                        content.append(board.getChess(positionJ, i));
                     }
                     // 将左边的权值加入到当前权值数组
                     Integer leftVal = ifPut(content, i, j);
@@ -43,7 +43,7 @@ public class Brain {
                     content = new StringBuilder(initStr);
                     int jMax = Math.min(Config.COLUMN, j + 4);
                     for (int positionJ = j + 1; positionJ <= jMax; positionJ++) {
-                        content.append(board.getChess(j, i));
+                        content.append(board.getChess(positionJ, i));
                     }
                     Integer rightVal = ifPut(content, i, j);
 
@@ -54,7 +54,7 @@ public class Brain {
                     content = new StringBuilder(initStr);
                     int iMin = Math.max(0, i - 4);
                     for (int positionI = i - 1; positionI >= iMin; positionI--) {
-                        content.append(board.getChess(j, i));
+                        content.append(board.getChess(j, positionI));
                     }
                     Integer upVal = ifPut(content, i, j);
 
@@ -62,7 +62,7 @@ public class Brain {
                     content = new StringBuilder(initStr);
                     int iMax = Math.min(Config.ROW, i + 4);
                     for (int positionI = i + 1; positionI <= iMin; positionI++) {
-                        content.append(board.getChess(j, i));
+                        content.append(board.getChess(j, positionI));
                     }
                     Integer downVal = ifPut(content, i, j);
 

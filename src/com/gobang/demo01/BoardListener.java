@@ -42,22 +42,17 @@ public class BoardListener implements Config, MouseListener {
         int siteY = Math.round((y - OFFSET) * 1.0f / GRID_SIZE);
 
         if (frame.isAvailable(siteX, siteY)) {
-            boolean over = putChess(siteX, siteY);
-            if (over) {
-                frame.showGameOver(playerTurn);
+            // 玩家落子
+            if (putChess(siteX, siteY)) {
                 return;
             }
 
-            // 交换选手
-            playerTurn = Player.change(playerTurn);
-
-
-            /*// AI下棋
+            // AI下棋
             // 获取棋盘剩余位置的权值
             brain.getWeight();
             // 取得权值最大的位置
-            int[] location = brain.getLocation();*/
-
+            int[] location = brain.getLocation();
+            putChess(location[1],location[0]);
         }
     }
 
@@ -180,11 +175,10 @@ public class BoardListener implements Config, MouseListener {
     }
 
     /**
-     * 落子的方法，并且在每次落子之后返回是否游戏结束，在方法中并不会交换选手，所以需要在调用方法后手动交换
-     *
+     * 落子的方法，在方法中并不会交换选手，所以需要在调用方法后手动交换
      * @param siteX
      * @param siteY
-     * @return ture:游戏结束
+     * @return
      */
     private boolean putChess(int siteX, int siteY) {
         Graphics g = frame.getGraphics();
@@ -197,8 +191,11 @@ public class BoardListener implements Config, MouseListener {
         // 设置游戏结束标识
         if (over) {
             isGameOver = true;
+            frame.showGameOver(playerTurn);
+            return true;
         }
-        return over;
+        playerTurn = Player.change(playerTurn);
+        return false;
     }
 
     @Override
