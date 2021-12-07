@@ -11,6 +11,8 @@ import java.awt.event.MouseListener;
  */
 public class BoardListener implements Config, MouseListener {
 
+    private Brain brain;
+
     private boolean isGameOver = false;
     private Frame frame;
 
@@ -21,6 +23,7 @@ public class BoardListener implements Config, MouseListener {
 
     public BoardListener(Frame frame) {
         this.frame = frame;
+        brain = new Brain(frame);
     }
 
     @Override
@@ -41,8 +44,11 @@ public class BoardListener implements Config, MouseListener {
         int siteY = Math.round((y - OFFSET) * 1.0f / GRID_SIZE);
 
         if (frame.isAvailable(siteX, siteY)) {
+            // 在数组中放置棋子
             frame.putChess(siteX, siteY, playerTurn);
+
             boolean over = isOver(frame, playerTurn, siteX, siteY);
+
             int xPoint = siteX * GRID_SIZE + START_X - 15;
             int yPoint = siteY * GRID_SIZE + START_Y - 15;
             // 绘制棋子
@@ -50,20 +56,36 @@ public class BoardListener implements Config, MouseListener {
                 // 设置棋子颜色
                 g.setColor(Color.BLACK);
                 g.fillOval(xPoint, yPoint, PIECE_SIZE, PIECE_SIZE);
-                playerTurn = Player.WHITE;
             } else {
                 g.setColor(Color.WHITE);
                 g.fillOval(xPoint, yPoint, PIECE_SIZE, PIECE_SIZE);
-                playerTurn = Player.BLACK;
             }
+
             // 判断输赢
             if (over) {
                 isGameOver = true;
                 frame.showGameOver(playerTurn);
             }
+            // 交换选手
+            playerTurn = Player.change(playerTurn);
+//
+//            // 获取棋盘剩余位置的权值
+//            brain.getWeight();
+//
+//            // 取得权值最大的位置
+//            int[] location = brain.getLocation();
+
         }
     }
 
+    /**
+     * 判断是否结束
+     * @param frame
+     * @param playerTurn
+     * @param siteX
+     * @param siteY
+     * @return
+     */
     private boolean isOver(Frame frame, Player playerTurn, int siteX, int siteY) {
         // 横竖撇捺方向的判断
         int flag = playerTurn.getFlag();
@@ -85,11 +107,8 @@ public class BoardListener implements Config, MouseListener {
         // 撇，注意事项同上
         startOffset = getTargetSite(siteX, siteY, 1, -1);
         endOffset = getTargetSite(siteX, siteY, -1, 1);
-        if (isOverInDirection(siteX + startOffset, siteY - startOffset,
-                siteX - endOffset, siteY + endOffset, -1, 1, flag)) {
-            return true;
-        }
-        return false;
+        return isOverInDirection(siteX + startOffset, siteY - startOffset,
+                siteX - endOffset, siteY + endOffset, -1, 1, flag);
     }
 
     /**
@@ -185,4 +204,8 @@ public class BoardListener implements Config, MouseListener {
     public void mouseExited(MouseEvent e) {
 
     }
+
+
+
+
 }

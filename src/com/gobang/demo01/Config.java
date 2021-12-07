@@ -52,6 +52,10 @@ public interface Config {
             return flag;
         }
 
+        public static Player change(Player player) {
+            return player == WHITE ? BLACK : WHITE;
+        }
+
         Player(int i) {
             flag = i;
         }

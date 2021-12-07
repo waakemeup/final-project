@@ -115,8 +115,8 @@ public class Frame extends JPanel implements Config {
     /**
      * 返回指定位置的棋子情况
      *
-     * @param siteX
-     * @param siteY
+     * @param siteX 列
+     * @param siteY 行
      * @return 1代表黑棋，2代表白棋，-1表示非法参数
      */
     public int getChess(int siteX, int siteY) {
@@ -132,6 +132,6 @@ public class Frame extends JPanel implements Config {
 
 
     public void showGameOver(Player playerTurn) {
-        JOptionPane.showMessageDialog(this, (playerTurn.getFlag() == 1 ? "白方" : "黑方") + "赢了");
+        JOptionPane.showMessageDialog(this, (playerTurn.getFlag() == 2 ? "白方" : "黑方") + "赢了");
     }
 }
