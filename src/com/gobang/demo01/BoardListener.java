@@ -34,8 +34,6 @@ public class BoardListener implements Config, MouseListener {
         }
 
 
-        Graphics g = frame.getGraphics();
-
         // 获取点击的坐标
         int x = e.getX() - START_X;
         int y = e.getY() - START_Y;
@@ -44,49 +42,45 @@ public class BoardListener implements Config, MouseListener {
         int siteY = Math.round((y - OFFSET) * 1.0f / GRID_SIZE);
 
         if (frame.isAvailable(siteX, siteY)) {
-            // 在数组中放置棋子
-            frame.putChess(siteX, siteY, playerTurn);
-
-            boolean over = isOver(frame, playerTurn, siteX, siteY);
-
-            int xPoint = siteX * GRID_SIZE + START_X - 15;
-            int yPoint = siteY * GRID_SIZE + START_Y - 15;
-            // 绘制棋子
-            if (playerTurn == Player.BLACK) {
-                // 设置棋子颜色
-                g.setColor(Color.BLACK);
-                g.fillOval(xPoint, yPoint, PIECE_SIZE, PIECE_SIZE);
-            } else {
-                g.setColor(Color.WHITE);
-                g.fillOval(xPoint, yPoint, PIECE_SIZE, PIECE_SIZE);
-            }
-
-            // 判断输赢
+            boolean over = putChess(siteX, siteY);
             if (over) {
-                isGameOver = true;
                 frame.showGameOver(playerTurn);
+                return;
             }
+
             // 交换选手
             playerTurn = Player.change(playerTurn);
-//
-//            // 获取棋盘剩余位置的权值
-//            brain.getWeight();
-//
-//            // 取得权值最大的位置
-//            int[] location = brain.getLocation();
+
+
+            /*// AI下棋
+            // 获取棋盘剩余位置的权值
+            brain.getWeight();
+            // 取得权值最大的位置
+            int[] location = brain.getLocation();*/
 
         }
     }
 
     /**
+     * 绘制棋子的方法
+     *
+     * @param g
+     * @param xPoint
+     * @param yPoint
+     */
+    private void drawChess(Graphics g, int xPoint, int yPoint) {
+        g.setColor(playerTurn == Player.BLACK ? Color.BLACK : Color.WHITE);
+        g.fillOval(xPoint, yPoint, PIECE_SIZE, PIECE_SIZE);
+    }
+
+    /**
      * 判断是否结束
-     * @param frame
-     * @param playerTurn
-     * @param siteX
-     * @param siteY
+     *
+     * @param siteX 最后一步的X
+     * @param siteY 最后一步的Y
      * @return
      */
-    private boolean isOver(Frame frame, Player playerTurn, int siteX, int siteY) {
+    private boolean isOver(int siteX, int siteY) {
         // 横竖撇捺方向的判断
         int flag = playerTurn.getFlag();
         // 横
@@ -113,6 +107,7 @@ public class BoardListener implements Config, MouseListener {
 
     /**
      * 获取指定方向上的偏移量
+     *
      * @param siteX
      * @param siteY
      * @param xOffset
@@ -122,7 +117,7 @@ public class BoardListener implements Config, MouseListener {
     private static int getTargetSite(int siteX, int siteY, int xOffset, int yOffset) {
         int offset = 0;
         for (int i = 0; i < 4; i++) {
-            if (!Frame.isEffective(siteX,siteY)) {
+            if (!Frame.isEffective(siteX, siteY)) {
                 break;
             }
             siteX += xOffset;
@@ -184,6 +179,27 @@ public class BoardListener implements Config, MouseListener {
         isGameOver = false;
     }
 
+    /**
+     * 落子的方法，并且在每次落子之后返回是否游戏结束，在方法中并不会交换选手，所以需要在调用方法后手动交换
+     *
+     * @param siteX
+     * @param siteY
+     * @return ture:游戏结束
+     */
+    private boolean putChess(int siteX, int siteY) {
+        Graphics g = frame.getGraphics();
+        frame.putChess(siteX, siteY, playerTurn);
+        // 获取棋盘位置在窗口中的相对坐标
+        int xPoint = siteX * GRID_SIZE + START_X - 15;
+        int yPoint = siteY * GRID_SIZE + START_Y - 15;
+        drawChess(g, xPoint, yPoint);
+        boolean over = isOver(siteX, siteY);
+        // 设置游戏结束标识
+        if (over) {
+            isGameOver = true;
+        }
+        return over;
+    }
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -204,8 +220,6 @@ public class BoardListener implements Config, MouseListener {
     public void mouseExited(MouseEvent e) {
 
     }
-
-
 
 
 }
